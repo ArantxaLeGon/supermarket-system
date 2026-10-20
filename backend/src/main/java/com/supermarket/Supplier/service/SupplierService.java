@@ -32,6 +32,10 @@ public class SupplierService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST ,"El correo ya esta en uso");
         }
 
+        if(request.getName() == null || request.getName().isBlank()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El nombre es obligtorio");
+        }
+
         // Reistra lo ingresado
         Supplier supplier = new Supplier();
         supplier.setName(request.getName());
@@ -107,6 +111,10 @@ public class SupplierService {
         if(SupplierNameFound.isPresent()){
             throw new Exception("Proveedor ya existente");
         };
+
+        if(request.getName() == null || request.getName().isBlank()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El nombre es obligtorio");
+        }
 
         Supplier supplier = SupplierIdFound.get();
         supplier.setName(request.getName());

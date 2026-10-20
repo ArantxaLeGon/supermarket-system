@@ -154,7 +154,7 @@ public class ProductService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El stock debe ser mayor o igual a 0");
         }
 
-        if(request.getPrice() == null || request.getPrice().compareTo(BigDecimal.ZERO)<0){
+        if(request.getPrice() == null || request.getPrice().compareTo(BigDecimal.ZERO) <= 0){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El precio debe ser mayor 0");
         }
 
@@ -197,5 +197,75 @@ public class ProductService {
        } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Producto no encontrado o Id inexistente"); 
        }
+    }
+
+    // Clase que los lista por categoria
+    public List<ProductResponseDTO> getByCategory(Long id){
+
+        List<ProductResponseDTO> response = new ArrayList<>();
+        List<Product> productsfound = productRepository.findAll();
+        
+        //Producto por poducto se revisa si esta en la categoria, si esta se añade a lista
+        for (Product productfound : productsfound) {
+            if(productfound.getIdCategory().getId().equals(id)){
+
+                ProductResponseDTO product = new ProductResponseDTO();
+
+                product.setId(productfound.getId());
+                product.setName(productfound.getName());
+                product.setPrice(productfound.getPrice());
+                product.setStock(productfound.getStock());
+                product.setBarcode(productfound.getBarcode());
+                product.setIdCategory(productfound.getIdCategory().getId());
+                product.setIdSupplier(productfound.getIdSupplier().getId());
+
+                response.add(product);
+            }
+        }
+        return response;
+    }
+
+    // Clase que lista los que coinciden con la busqueda
+    public List<ProductResponseDTO> search(String name){
+
+        List<ProductResponseDTO> response = new ArrayList<>();
+        List<Product> productsfound = productRepository.findByNameContainingIgnoreCase(name);
+        
+        for (Product productfound : productsfound) {
+            ProductResponseDTO product = new ProductResponseDTO();
+
+            product.setId(productfound.getId());
+            product.setName(productfound.getName());
+            product.setPrice(productfound.getPrice());
+            product.setStock(productfound.getStock());
+            product.setBarcode(productfound.getBarcode());
+            product.setIdCategory(productfound.getIdCategory().getId());
+            product.setIdSupplier(productfound.getIdSupplier().getId());
+
+            response.add(product);
+        }
+        return response;
+    }
+
+    // Clase que lista los que tienen poco stock
+    public List<ProductResponseDTO> lowStock(Integer limit){
+
+        List<ProductResponseDTO> response = new ArrayList<>();
+        List<Product> productsfound = productRepository.findByStockLessThanEqual(limit);
+        
+        for (Product productfound : productsfound) {
+            ProductResponseDTO product = new ProductResponseDTO();
+
+            product.setId(productfound.getId());
+            product.setName(productfound.getName());
+            product.setPrice(productfound.getPrice());
+            product.setStock(productfound.getStock());
+            product.setBarcode(productfound.getBarcode());
+            product.setIdCategory(productfound.getIdCategory().getId());
+            product.setIdSupplier(productfound.getIdSupplier().getId());
+
+            response.add(product);
+        }
+        return response;
     }
 }

@@ -1,7 +1,9 @@
 package com.supermarket.Sale.service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -150,8 +152,8 @@ public class SaleServices {
          
          // Validacion si no se encuentra
          if(SaleFound.isEmpty()){
-             throw new Exception("La venta no se ha encontrado");
-            };
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "La venta no se ha encontrado");
+         };
             
         // Busca el id y obtiene la info
         Sale sale = SaleFound.get();
@@ -203,5 +205,71 @@ public class SaleServices {
         saleDetailRepository.deleteAll(details);
         saleRepository.deleteById(Id);
 
+    }
+
+    // Clase que lista las ventas por cliente
+    public List<SaleResponseDTO> getByClient(Long idClient) {
+        List<SaleResponseDTO> response = new ArrayList<>();
+        List<Sale> salesClient = saleRepository.findByIdClientId(idClient);
+
+        for(Sale saleclient : salesClient){
+            
+            List<SaleDetailResponseDTO> details = new ArrayList<>();
+
+            for (SaleDetail d : saleDetailRepository.findBySaleId(saleclient.getId())) {
+                SaleDetailResponseDTO detail = new SaleDetailResponseDTO();
+                detail.setId(d.getId());
+                detail.setAmount(d.getAmount());
+                detail.setUnitPrice(d.getUnitPrice());
+                detail.setSubtotal(d.getSubtotal());
+                detail.setIdProduct(d.getProduct().getId());
+                detail.setIdSale(d.getSale().getId());
+                details.add(detail);
+            }
+
+            SaleResponseDTO sale = new SaleResponseDTO();
+            sale.setId(saleclient.getId());
+            sale.setSaleDate(saleclient.getSaleDate());
+            sale.setTotal(saleclient.getTotal());
+            sale.setIdClient(saleclient.getIdClient().getId());
+            sale.setDetails(details);
+
+            response.add(sale);
+        }
+
+        return response;
+    }
+
+    // Clase que busca ventar por rango de fechas
+    public List<SaleResponseDTO> getByDate(LocalDate start, LocalDate end) {
+        List<SaleResponseDTO> response = new ArrayList<>();
+        List<Sale> salesClient = saleRepository.findBySaleDateBetween(start.atStartOfDay(), end.atTime(LocalTime.MAX));
+
+        for(Sale saleclient : salesClient){
+            
+            List<SaleDetailResponseDTO> details = new ArrayList<>();
+
+            for (SaleDetail d : saleDetailRepository.findBySaleId(saleclient.getId())) {
+                SaleDetailResponseDTO detail = new SaleDetailResponseDTO();
+                detail.setId(d.getId());
+                detail.setAmount(d.getAmount());
+                detail.setUnitPrice(d.getUnitPrice());
+                detail.setSubtotal(d.getSubtotal());
+                detail.setIdProduct(d.getProduct().getId());
+                detail.setIdSale(d.getSale().getId());
+                details.add(detail);
+            }
+
+            SaleResponseDTO sale = new SaleResponseDTO();
+            sale.setId(saleclient.getId());
+            sale.setSaleDate(saleclient.getSaleDate());
+            sale.setTotal(saleclient.getTotal());
+            sale.setIdClient(saleclient.getIdClient().getId());
+            sale.setDetails(details);
+
+            response.add(sale);
+        }
+
+        return response;
     }
 }

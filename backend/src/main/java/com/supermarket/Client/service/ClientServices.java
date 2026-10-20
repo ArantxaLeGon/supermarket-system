@@ -12,6 +12,7 @@ import com.supermarket.Client.dto.ClientRequestDTO;
 import com.supermarket.Client.dto.ClientResponseDTO;
 import com.supermarket.Client.entity.Client;
 import com.supermarket.Client.repository.ClientRepository;
+import com.supermarket.Product.entity.Product;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 public class ClientServices {
     private final ClientRepository clientRepository;
 
-        // Clase que crea el metodo de crear clientes
+    // Clase que crea el metodo de crear clientes
     public ClientResponseDTO crearteClient(ClientRequestDTO request) throws Exception{
         // Revision de si exite el nombre
         Optional<Client> clientfound = clientRepository.findByDocument(request.getDocument());
@@ -28,6 +29,10 @@ public class ClientServices {
         // Si existe, parece error
         if(clientfound.isPresent()){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST , "Documento ya esta en uso");
+        }
+
+        if(request.getName() == null || request.getName().isBlank()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El nombre es obligtorio");
         }
 
         // Reistra lo ingresado
@@ -72,7 +77,7 @@ public class ClientServices {
         return response;
     }
 
-    // Clase que llama a una categoria por ID
+    // Clase que llama los clientes por ID
     public ClientResponseDTO getIdClient(Long Id) throws Exception {
         Optional<Client> clientFound = clientRepository.findById(Id);
 
@@ -101,9 +106,13 @@ public class ClientServices {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND , "No se encontro el cliente");
         }
         
-        Optional<Client> clientDocumentFound = clientRepository.findByDocument(request.getDocument());
-        if(clientDocumentFound.isPresent()){
+        Optional<Client> DocumentFound = clientRepository.findByDocument(request.getDocument());
+        if(DocumentFound.isPresent() && !DocumentFound.get().getId().equals(Id)){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST , "Cliente ya existente");
+        }
+
+        if(request.getName() == null || request.getName().isBlank()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El nombre es obligtorio");
         }
 
         Client client = clientIdFound.get();
@@ -121,6 +130,7 @@ public class ClientServices {
         return response;
     }
 
+    // Clase que borra el cliente
     public void deleteClient(Long Id) throws Exception{
 
        if (clientRepository.existsById(Id)){
@@ -128,5 +138,26 @@ public class ClientServices {
        } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND , "No se encontro el cliente");
        }
+    }
+
+    // Busqueda de un cliente por el documento
+    public ClientResponseDTO getByDocument(String document) {
+
+        Optional<Client> documentFound = clientRepository.findByDocument(document);
+
+        if(documentFound.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND , "No se encontro ninguna concidencia");
+        }
+
+        Client client = documentFound.get();
+        ClientResponseDTO response = new ClientResponseDTO();
+
+        response.setId(client.getId());
+        response.setName(client.getName());
+        response.setDocument(client.getDocument());
+        response.setPhone(client.getPhone());
+
+        return response;
+       
     }
 }

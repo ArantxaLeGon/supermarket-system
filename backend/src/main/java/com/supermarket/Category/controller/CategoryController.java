@@ -25,35 +25,35 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController 
 @RequiredArgsConstructor 
-@RequestMapping("/Category")
+@RequestMapping("api/category")
 public class CategoryController {
     private final CategoryService categoryService;
     
-    @PostMapping("/Post")
+    @PostMapping
     public ResponseEntity<CategoryResponseDTO> crearteCategory (@RequestBody CategoryRequestDTO request) throws Exception{
         CategoryResponseDTO response = categoryService.crearteCategory(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     };
     
-    @GetMapping("/Get")
+    @GetMapping
     public ResponseEntity<List<CategoryResponseDTO>> getallCategory() {
         List<CategoryResponseDTO> response = categoryService.getallCategory();
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @GetMapping("/Get/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<CategoryResponseDTO> getIdCategory (@PathVariable Long id) throws Exception{
         CategoryResponseDTO response = categoryService.getIdCategory(id);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @PutMapping("/Put/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<CategoryResponseDTO> putCategory(@PathVariable Long id, @RequestBody CategoryRequestDTO request) throws Exception {
         CategoryResponseDTO response = categoryService.putCategory(id, request);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
     
-     @DeleteMapping("/Delete/{id}")
+     @DeleteMapping("/{id}")
      public ResponseEntity<Void> deleteCategory(@PathVariable Long id) throws Exception{
         categoryService.deleteCategory(id);
         return ResponseEntity.noContent().build();

@@ -20,11 +20,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController 
 @RequiredArgsConstructor 
-@RequestMapping ("/Product")
+@RequestMapping ("api/product")
 public class ProductController {
     private final ProductService productService;
 
@@ -58,4 +59,23 @@ public class ProductController {
         productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
      }
+
+    //  Busquedas aparte
+    @GetMapping("/categoria/{idCategory}")
+    public ResponseEntity<List<ProductResponseDTO>> searchByCategory(@PathVariable Long idCategory) {
+        List<ProductResponseDTO> response = productService.getByCategory(idCategory);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<ProductResponseDTO>> search(@RequestParam String nombre) {
+        List<ProductResponseDTO> response = productService.search(nombre);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @GetMapping("/low-stock")
+    public ResponseEntity<List<ProductResponseDTO>> lowStock(@RequestParam(defaultValue = "10") Integer limit) {
+        List<ProductResponseDTO> response = productService.lowStock(limit);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }    
 }

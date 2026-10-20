@@ -33,6 +33,10 @@ public class CategoryService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Esta categoria ya esta en uso");
         }
 
+        if(request.getName() == null || request.getName().isBlank()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El nombre es obligtorio");
+        }
+
         // Reistra lo ingresado
         Category category = new Category();
         category.setName(request.getName());
@@ -104,6 +108,10 @@ public class CategoryService {
         if(categoryNameFound.isPresent()){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Categoria ya existente");
         };
+
+        if(request.getName() == null || request.getName().isBlank()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El nombre es obligtorio");
+        }
 
         Category category = categoryIdFound.get();
         category.setName(request.getName());

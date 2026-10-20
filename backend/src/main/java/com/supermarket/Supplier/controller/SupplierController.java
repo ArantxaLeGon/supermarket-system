@@ -23,35 +23,35 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController 
 @RequiredArgsConstructor 
-@RequestMapping ("/Supplier")
+@RequestMapping ("api/supplier")
 public class SupplierController {
     private final SupplierService supplierService;
 
-    @PostMapping("/Post")
+    @PostMapping
     public ResponseEntity<SupplierResponseDTO> createSupplier (@RequestBody SupplierRequestDTO request) throws Exception{
         SupplierResponseDTO response = supplierService.createSupplier(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     };
 
-    @GetMapping("/Get")
+    @GetMapping
     public ResponseEntity<List<SupplierResponseDTO>> getallSupplier() {
         List<SupplierResponseDTO> response = supplierService.getallSupplier();
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @GetMapping("/Get/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<SupplierResponseDTO> getIdSupplier (@PathVariable Long id) throws Exception{
         SupplierResponseDTO response = supplierService.getIdSupplier(id);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @PutMapping("/Put/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<SupplierResponseDTO> putSupplier(@PathVariable Long id, @RequestBody SupplierRequestDTO request) throws Exception {
         SupplierResponseDTO response = supplierService.putSupplier(id, request);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
     
-     @DeleteMapping("/Delete/{id}")
+     @DeleteMapping("/{id}")
      public ResponseEntity<Void> deleteSupplier(@PathVariable Long id) throws Exception{
         supplierService.deleteSupplier(id);
         return ResponseEntity.noContent().build();
