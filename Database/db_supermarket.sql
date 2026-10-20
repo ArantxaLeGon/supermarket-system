@@ -1,3 +1,34 @@
+-- =====================================================================
+--  SUPERMARKET SYSTEM · Script de base de datos
+--  Motor: PostgreSQL 14 o superior
+--  Crea las 6 tablas: category, supplier, client, product, sale, sale_detail
+-- =====================================================================
+--
+--  CÓMO USARLO
+--  1) Crear la base de datos (una sola vez). Desde psql:
+--         CREATE DATABASE supermarket;
+--     o desde pgAdmin / DBeaver: clic derecho en Databases > Create > Database.
+--  2) Conectarse a la base "supermarket" y ejecutar ESTE archivo completo:
+--         psql -U postgres -d supermarket -f Database/db_supermarket.sql
+--
+--  Nota: el backend usa ddl-auto: none, así que Spring Boot NO crea las
+--  tablas. Hay que crearlas con este script antes de arrancar la API.
+-- =====================================================================
+
+
+-- ---------------------------------------------------------------------
+-- REINICIAR DESDE CERO (opcional)
+-- Quita el comentario (--) de las 6 líneas siguientes para borrar todo y
+-- volver a crear las tablas. OJO: se pierden todos los datos.
+-- ---------------------------------------------------------------------
+-- DROP TABLE IF EXISTS sale_detail;
+-- DROP TABLE IF EXISTS sale;
+-- DROP TABLE IF EXISTS product;
+-- DROP TABLE IF EXISTS client;
+-- DROP TABLE IF EXISTS supplier;
+-- DROP TABLE IF EXISTS category;
+
+
 -- CREACIÓN DE TABLAS --
 
 -- tabla de categoria

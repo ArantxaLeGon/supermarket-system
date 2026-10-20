@@ -12,7 +12,6 @@ import com.supermarket.Client.dto.ClientRequestDTO;
 import com.supermarket.Client.dto.ClientResponseDTO;
 import com.supermarket.Client.entity.Client;
 import com.supermarket.Client.repository.ClientRepository;
-import com.supermarket.Product.entity.Product;
 
 import lombok.RequiredArgsConstructor;
 

@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "Supermarket System - API REST",
-    "description": "# 🛒 Supermarket System · API REST\n\nColección para probar todos los endpoints del backend.\n\n## Antes de empezar\n1. Crea la base de datos con `Database/db_supermarket.sql`.\n2. Arranca el backend (puerto **6060**).\n3. La variable `baseUrl` ya apunta a `http://localhost:6060`.\n\n## Cómo ejecutarla\n- **Todo de una vez:** clic derecho en la colección → **Run collection** → **Run**. Las carpetas están en el orden correcto.\n- **Uno por uno:** respeta el orden Category → Supplier → Client → Product → Sale → SaleDetail.\n\n## Qué hace sola\n- Guarda los ids que devuelve cada POST (`categoryId`, `productId`, `saleId`...) y los usa en las demás peticiones.\n- Genera códigos de barras, documentos y correos únicos en cada ejecución.\n- Cada petición trae pruebas (tests) que verifican el código de respuesta y los cálculos.\n- La carpeta final **Eliminar** borra los datos de prueba.\n",
+    "description": "# 🛒 Supermarket System · API REST\n\nColección para probar todos los endpoints del backend (rutas `/api/...`).\n\n## Antes de empezar\n1. Crea la base de datos y las tablas con `Database/db_supermarket.sql`.\n2. Pon tu contraseña de PostgreSQL en `backend/src/main/resources/application.yaml`.\n3. Arranca el backend (puerto **6060**). La variable `baseUrl` ya apunta a `http://localhost:6060`.\n\n## Cómo ejecutarla\n- **Todo de una vez:** clic derecho en la colección → **Run collection** → **Run**. Las carpetas están en el orden correcto.\n- **Uno por uno:** respeta el orden Category → Supplier → Client → Product → Sale → SaleDetail → Casos de error → Eliminar.\n\n## Qué hace sola\n- Guarda los ids que devuelve cada POST (`categoryId`, `productId`, `saleId`...) y los usa en las demás peticiones.\n- Genera códigos de barras, documentos y correos únicos (y fechas) en cada ejecución, así que se puede correr varias veces.\n- Cada petición trae pruebas (tests) que verifican el código de respuesta y los cálculos.\n- La carpeta final **Eliminar** borra los datos de prueba.\n",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -19,13 +19,13 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/Category/Post",
+              "raw": "{{baseUrl}}/api/category",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "Category",
-                "Post"
+                "api",
+                "category"
               ]
             },
             "body": {
@@ -57,13 +57,13 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/Category/Get",
+              "raw": "{{baseUrl}}/api/category",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "Category",
-                "Get"
+                "api",
+                "category"
               ]
             }
           },
@@ -85,13 +85,13 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/Category/Get/{{categoryId}}",
+              "raw": "{{baseUrl}}/api/category/{{categoryId}}",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "Category",
-                "Get",
+                "api",
+                "category",
                 "{{categoryId}}"
               ]
             }
@@ -119,13 +119,13 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/Category/Put/{{categoryId}}",
+              "raw": "{{baseUrl}}/api/category/{{categoryId}}",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "Category",
-                "Put",
+                "api",
+                "category",
                 "{{categoryId}}"
               ]
             },
@@ -168,13 +168,13 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/Supplier/Post",
+              "raw": "{{baseUrl}}/api/supplier",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "Supplier",
-                "Post"
+                "api",
+                "supplier"
               ]
             },
             "body": {
@@ -206,13 +206,13 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/Supplier/Get",
+              "raw": "{{baseUrl}}/api/supplier",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "Supplier",
-                "Get"
+                "api",
+                "supplier"
               ]
             }
           },
@@ -234,13 +234,13 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/Supplier/Get/{{supplierId}}",
+              "raw": "{{baseUrl}}/api/supplier/{{supplierId}}",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "Supplier",
-                "Get",
+                "api",
+                "supplier",
                 "{{supplierId}}"
               ]
             }
@@ -268,13 +268,13 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/Supplier/Put/{{supplierId}}",
+              "raw": "{{baseUrl}}/api/supplier/{{supplierId}}",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "Supplier",
-                "Put",
+                "api",
+                "supplier",
                 "{{supplierId}}"
               ]
             },
@@ -317,13 +317,13 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/Client/Post",
+              "raw": "{{baseUrl}}/api/client",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "Client",
-                "Post"
+                "api",
+                "client"
               ]
             },
             "body": {
@@ -355,13 +355,13 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/Client/Get",
+              "raw": "{{baseUrl}}/api/client",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "Client",
-                "Get"
+                "api",
+                "client"
               ]
             }
           },
@@ -383,13 +383,13 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/Client/Get/{{clientId}}",
+              "raw": "{{baseUrl}}/api/client/{{clientId}}",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "Client",
-                "Get",
+                "api",
+                "client",
                 "{{clientId}}"
               ]
             }
@@ -417,13 +417,13 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/Client/Put/{{clientId}}",
+              "raw": "{{baseUrl}}/api/client/{{clientId}}",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "Client",
-                "Put",
+                "api",
+                "client",
                 "{{clientId}}"
               ]
             },
@@ -444,7 +444,40 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Status 200\", function () { pm.response.to.have.status(200); });"
+                  "pm.test(\"Status 200\", function () { pm.response.to.have.status(200); });",
+                  "// El pre-request regenera valores aleatorios en cada petición: se guarda el documento real",
+                  "pm.collectionVariables.set(\"savedDocument\", pm.response.json().document);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Buscar cliente por documento",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/client/document/{{savedDocument}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "client",
+                "document",
+                "{{savedDocument}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Devuelve el cliente creado\", function () { pm.expect(String(pm.response.json().id)).to.eql(String(pm.collectionVariables.get(\"clientId\"))); });"
                 ]
               }
             }
@@ -466,12 +499,13 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/Product/Post",
+              "raw": "{{baseUrl}}/api/product/Post",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "Product",
+                "api",
+                "product",
                 "Post"
               ]
             },
@@ -510,12 +544,13 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/Product/Post",
+              "raw": "{{baseUrl}}/api/product/Post",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "Product",
+                "api",
+                "product",
                 "Post"
               ]
             },
@@ -548,12 +583,13 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/Product/Get",
+              "raw": "{{baseUrl}}/api/product/Get",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "Product",
+                "api",
+                "product",
                 "Get"
               ]
             }
@@ -576,12 +612,13 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/Product/Get/{{productId}}",
+              "raw": "{{baseUrl}}/api/product/Get/{{productId}}",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "Product",
+                "api",
+                "product",
                 "Get",
                 "{{productId}}"
               ]
@@ -610,12 +647,13 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/Product/Put/{{productId}}",
+              "raw": "{{baseUrl}}/api/product/Put/{{productId}}",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "Product",
+                "api",
+                "product",
                 "Put",
                 "{{productId}}"
               ]
@@ -638,7 +676,114 @@
                 "type": "text/javascript",
                 "exec": [
                   "pm.test(\"Status 200\", function () { pm.response.to.have.status(200); });",
-                  "pm.test(\"Nombre actualizado\", function () { pm.expect(pm.response.json().name).to.eql(\"Leche Entera 1L\"); });"
+                  "pm.test(\"Nombre actualizado\", function () { pm.expect(pm.response.json().name).to.eql(\"Leche Entera 1L\"); });",
+                  "// El código de barras cambió: se guarda el nuevo para la prueba de \"código repetido\"",
+                  "pm.collectionVariables.set(\"savedBarcode\", pm.response.json().barcode);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Listar productos por categoría",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/product/categoria/{{categoryId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "product",
+                "categoria",
+                "{{categoryId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"La categoría tiene 2 productos\", function () { pm.expect(pm.response.json().length).to.eql(2); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Buscar productos por nombre",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/product/search?nombre=Leche",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "product",
+                "search"
+              ],
+              "query": [
+                {
+                  "key": "nombre",
+                  "value": "Leche"
+                }
+              ]
+            },
+            "description": "La búsqueda ignora mayúsculas y minúsculas. Parámetro: nombre."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Encuentra la leche\", function () { pm.expect(pm.response.json().some(p => String(p.id) === String(pm.collectionVariables.get(\"productId\")))).to.be.true; });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Productos con stock bajo",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/product/low-stock?limit=1000",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "product",
+                "low-stock"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "1000"
+                }
+              ]
+            },
+            "description": "Lista los productos con stock menor o igual a limit (por defecto 10)."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Incluye la leche (stock 20 <= 1000)\", function () { pm.expect(pm.response.json().some(p => String(p.id) === String(pm.collectionVariables.get(\"productId\")))).to.be.true; });"
                 ]
               }
             }
@@ -660,13 +805,13 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/Sale/Post",
+              "raw": "{{baseUrl}}/api/sale",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "Sale",
-                "Post"
+                "api",
+                "sale"
               ]
             },
             "body": {
@@ -700,13 +845,13 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/Sale/Get",
+              "raw": "{{baseUrl}}/api/sale",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "Sale",
-                "Get"
+                "api",
+                "sale"
               ]
             }
           },
@@ -728,13 +873,13 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/Sale/Get/{{saleId}}",
+              "raw": "{{baseUrl}}/api/sale/{{saleId}}",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "Sale",
-                "Get",
+                "api",
+                "sale",
                 "{{saleId}}"
               ]
             }
@@ -758,12 +903,13 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/Product/Get/{{productId}}",
+              "raw": "{{baseUrl}}/api/product/Get/{{productId}}",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "Product",
+                "api",
+                "product",
                 "Get",
                 "{{productId}}"
               ]
@@ -777,6 +923,79 @@
                 "exec": [
                   "pm.test(\"Status 200\", function () { pm.response.to.have.status(200); });",
                   "pm.test(\"Stock bajó de 20 a 18\", function () { pm.expect(pm.response.json().stock).to.eql(18); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Ventas de un cliente",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/sale/client/{{clientId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "sale",
+                "client",
+                "{{clientId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"El cliente tiene 1 venta\", function () { pm.expect(pm.response.json().length).to.eql(1); });",
+                  "pm.test(\"Es la venta creada\", function () { pm.expect(String(pm.response.json()[0].id)).to.eql(String(pm.collectionVariables.get(\"saleId\"))); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Ventas por rango de fechas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/sale/date?start={{dateFrom}}&end={{dateTo}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "sale",
+                "date"
+              ],
+              "query": [
+                {
+                  "key": "start",
+                  "value": "{{dateFrom}}"
+                },
+                {
+                  "key": "end",
+                  "value": "{{dateTo}}"
+                }
+              ]
+            },
+            "description": "Fechas en formato yyyy-MM-dd. La colección usa ayer y mañana para cubrir diferencias de zona horaria."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", function () { pm.response.to.have.status(200); });",
+                  "pm.test(\"Incluye la venta creada\", function () { pm.expect(pm.response.json().some(s => String(s.id) === String(pm.collectionVariables.get(\"saleId\")))).to.be.true; });"
                 ]
               }
             }
@@ -798,13 +1017,13 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/SaleDetail/Post",
+              "raw": "{{baseUrl}}/api/saleDetail",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "SaleDetail",
-                "Post"
+                "api",
+                "saleDetail"
               ]
             },
             "body": {
@@ -838,13 +1057,13 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/SaleDetail/Get",
+              "raw": "{{baseUrl}}/api/saleDetail",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "SaleDetail",
-                "Get"
+                "api",
+                "saleDetail"
               ]
             }
           },
@@ -866,13 +1085,13 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/SaleDetail/Get/{{saleDetailId}}",
+              "raw": "{{baseUrl}}/api/saleDetail/{{saleDetailId}}",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "SaleDetail",
-                "Get",
+                "api",
+                "saleDetail",
                 "{{saleDetailId}}"
               ]
             }
@@ -895,13 +1114,13 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/SaleDetail/Get/sale/{{saleId}}",
+              "raw": "{{baseUrl}}/api/saleDetail/sale/{{saleId}}",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "SaleDetail",
-                "Get",
+                "api",
+                "saleDetail",
                 "sale",
                 "{{saleId}}"
               ]
@@ -931,13 +1150,13 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/SaleDetail/Put/{{saleDetailId}}",
+              "raw": "{{baseUrl}}/api/saleDetail/{{saleDetailId}}",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "SaleDetail",
-                "Put",
+                "api",
+                "saleDetail",
                 "{{saleDetailId}}"
               ]
             },
@@ -980,13 +1199,13 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/Sale/Post",
+              "raw": "{{baseUrl}}/api/sale",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "Sale",
-                "Post"
+                "api",
+                "sale"
               ]
             },
             "body": {
@@ -1017,12 +1236,13 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/Product/Get/999999",
+              "raw": "{{baseUrl}}/api/product/Get/999999",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "Product",
+                "api",
+                "product",
                 "Get",
                 "999999"
               ]
@@ -1051,13 +1271,13 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/Sale/Post",
+              "raw": "{{baseUrl}}/api/sale",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "Sale",
-                "Post"
+                "api",
+                "sale"
               ]
             },
             "body": {
@@ -1093,13 +1313,13 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/Sale/Post",
+              "raw": "{{baseUrl}}/api/sale",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "Sale",
-                "Post"
+                "api",
+                "sale"
               ]
             },
             "body": {
@@ -1135,12 +1355,13 @@
               }
             ],
             "url": {
-              "raw": "{{baseUrl}}/Product/Post",
+              "raw": "{{baseUrl}}/api/product/Post",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "Product",
+                "api",
+                "product",
                 "Post"
               ]
             },
@@ -1165,6 +1386,106 @@
               }
             }
           ]
+        },
+        {
+          "name": "400 · Documento de cliente repetido",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/client",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "client"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Cliente repetido\",\n  \"document\": \"{{savedDocument}}\",\n  \"phone\": \"{{phone}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 400\", function () { pm.response.to.have.status(400); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "409 · Categoría con productos",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/category/{{categoryId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "category",
+                "{{categoryId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 409\", function () { pm.response.to.have.status(409); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "409 · Proveedor con productos",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/supplier/{{supplierId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "supplier",
+                "{{supplierId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 409\", function () { pm.response.to.have.status(409); });"
+                ]
+              }
+            }
+          ]
         }
       ],
       "description": "Pruebas que deben responder con error a propósito. Ejecutar antes de la carpeta de eliminación."
@@ -1178,13 +1499,13 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/SaleDetail/Delete/{{saleDetailId}}",
+              "raw": "{{baseUrl}}/api/saleDetail/{{saleDetailId}}",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "SaleDetail",
-                "Delete",
+                "api",
+                "saleDetail",
                 "{{saleDetailId}}"
               ]
             }
@@ -1207,13 +1528,13 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/Sale/Delete/{{saleId}}",
+              "raw": "{{baseUrl}}/api/sale/{{saleId}}",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "Sale",
-                "Delete",
+                "api",
+                "sale",
                 "{{saleId}}"
               ]
             }
@@ -1236,12 +1557,13 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/Product/Delete/{{productId}}",
+              "raw": "{{baseUrl}}/api/product/Delete/{{productId}}",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "Product",
+                "api",
+                "product",
                 "Delete",
                 "{{productId}}"
               ]
@@ -1265,12 +1587,13 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/Product/Delete/{{productId2}}",
+              "raw": "{{baseUrl}}/api/product/Delete/{{productId2}}",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "Product",
+                "api",
+                "product",
                 "Delete",
                 "{{productId2}}"
               ]
@@ -1294,13 +1617,13 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/Supplier/Delete/{{supplierId}}",
+              "raw": "{{baseUrl}}/api/supplier/{{supplierId}}",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "Supplier",
-                "Delete",
+                "api",
+                "supplier",
                 "{{supplierId}}"
               ]
             }
@@ -1323,13 +1646,13 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/Category/Delete/{{categoryId}}",
+              "raw": "{{baseUrl}}/api/category/{{categoryId}}",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "Category",
-                "Delete",
+                "api",
+                "category",
                 "{{categoryId}}"
               ]
             }
@@ -1352,13 +1675,13 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "{{baseUrl}}/Client/Delete/{{clientId}}",
+              "raw": "{{baseUrl}}/api/client/{{clientId}}",
               "host": [
                 "{{baseUrl}}"
               ],
               "path": [
-                "Client",
-                "Delete",
+                "api",
+                "client",
                 "{{clientId}}"
               ]
             }
@@ -1394,7 +1717,12 @@
           "pm.collectionVariables.set('barcodeUpd', '770' + r(10));",
           "pm.collectionVariables.set('document', r(10));",
           "pm.collectionVariables.set('documentUpd', r(10));",
-          "pm.collectionVariables.set('phone', '3' + r(9));"
+          "pm.collectionVariables.set('phone', '3' + r(9));",
+          "",
+          "// Rango de fechas (ayer -> mañana) para GET /api/sale/date, formato yyyy-MM-dd",
+          "const day = (off) => new Date(Date.now() + off * 86400000).toISOString().slice(0, 10);",
+          "pm.collectionVariables.set('dateFrom', day(-1));",
+          "pm.collectionVariables.set('dateTo', day(1));"
         ]
       }
     }

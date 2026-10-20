@@ -37,9 +37,9 @@
 Es el backend de un supermercado. Permite:
 
 - 📂 Administrar **categorías** y 🚚 **proveedores**.
-- 🧑 Registrar **clientes**.
-- 📦 Controlar **productos** con precio, stock y código de barras.
-- 🧾 Registrar **ventas** con varios productos en una sola petición. El sistema descuenta el stock y calcula el total solo.
+- 🧑 Registrar **clientes** y buscarlos por documento.
+- 📦 Controlar **productos** con precio, stock y código de barras (con búsqueda por nombre, por categoría y por stock bajo).
+- 🧾 Registrar **ventas** con varios productos en una sola petición. El sistema descuenta el stock y calcula el total solo. También se pueden consultar por cliente o por rango de fechas.
 
 ---
 
@@ -50,7 +50,7 @@ Es el backend de un supermercado. Permite:
 | ☕ Java | 21 | Lenguaje |
 | 🍃 Spring Boot | 4.1.1 | Framework de la API |
 | 🗄️ Spring Data JPA / Hibernate | — | Acceso a la base de datos |
-| 🐘 PostgreSQL | — | Base de datos |
+| 🐘 PostgreSQL | 14 o superior | Base de datos |
 | 🧪 Lombok | — | Menos código repetido (getters y setters) |
 | 📦 Maven Wrapper | — | Compilar y ejecutar sin instalar Maven |
 | 📮 Postman | — | Probar los endpoints |
@@ -63,7 +63,7 @@ Es el backend de un supermercado. Permite:
 Supermarket_system/
 ├── 📁 Database/
 │   └── db_supermarket.sql              ← script para crear las tablas
-├── 📁 Postman/
+├── 📁 Colección de Postman/
 │   └── Supermarket_API.postman_collection.json
 ├── 📁 backend/
 │   ├── pom.xml
@@ -151,7 +151,7 @@ Antes de empezar, instala:
 | 📮 Postman | Última | — |
 | 💻 VS Code (opcional) | Con *Extension Pack for Java* | — |
 
-> 💡 No necesitas instalar Maven, el proyecto trae su propio Maven Wrapper (`mvnw`).
+> 💡 No necesitas instalar Maven, el proyecto trae su propio Maven Wrapper (`mvnw`). La primera vez descarga Maven y las dependencias, así que necesitas conexión a internet.
 
 ---
 
@@ -210,6 +210,8 @@ server:
   port: 6060                         # 👈 puerto de la API
 ```
 
+> ⚠️ En el repositorio el campo `password` viene vacío (`#contraseña personal`). Si no lo completas, la app no podrá conectarse a la base de datos.
+
 ### 4️⃣ Ejecutar el backend
 
 **Desde la terminal**
@@ -231,7 +233,7 @@ cd backend
 Con la app corriendo, abre en el navegador:
 
 ```
-http://localhost:6060/Category/Get
+http://localhost:6060/api/category
 ```
 
 Si ves `[]` (lista vacía), todo salió bien. 🎉
@@ -240,17 +242,17 @@ Si ves `[]` (lista vacía), todo salió bien. 🎉
 
 ## 📮 Colección de Postman
 
-📁 Archivo: [`Postman/Supermarket_API.postman_collection.json`](Postman/Supermarket_API.postman_collection.json)
+📁 Archivo: [`Colección de Postman/Supermarket_API.postman_collection.json`](Colecci%C3%B3n%20de%20Postman/Supermarket_API.postman_collection.json)
 
 ### Cómo importarla
 
 1. Abre Postman → botón **Import**.
 2. Arrastra el archivo `.json` (o elígelo con **Files**).
-3. Verás la colección **Supermarket System - API REST** con 8 carpetas.
+3. Verás la colección **Supermarket System - API REST** con 8 carpetas y 47 peticiones.
 
 ### Cómo usarla
 
-Con el backend encendido, tienes dos opciones:
+Con el backend encendido y la base de datos creada, tienes dos opciones:
 
 - ▶️ **Todo de una vez:** clic derecho en la colección → **Run collection** → **Run**.
 - 👆 **Una por una:** sigue el orden de las carpetas.
@@ -259,9 +261,9 @@ Con el backend encendido, tienes dos opciones:
 |---|---|---|
 | 1 | 📂 Category | Crear, listar, consultar y actualizar |
 | 2 | 🚚 Supplier | Crear, listar, consultar y actualizar |
-| 3 | 🧑 Client | Crear, listar, consultar y actualizar |
-| 4 | 📦 Product | Crear 2 productos, listar, consultar y actualizar |
-| 5 | 🧾 Sale | Crear una venta, consultarla y verificar el stock |
+| 3 | 🧑 Client | Crear, listar, consultar, actualizar y buscar por documento |
+| 4 | 📦 Product | Crear 2 productos, listar, consultar, actualizar, listar por categoría, buscar por nombre y ver stock bajo |
+| 5 | 🧾 Sale | Crear una venta, consultarla, verificar el stock, ventas por cliente y por rango de fechas |
 | 6 | 🧩 SaleDetail | Crear, listar, consultar y actualizar detalles |
 | 7 | ⚠️ Casos de error | Pruebas que deben fallar a propósito (400, 404 y 409) |
 | 8 | 🧹 Eliminar | Borra los datos de prueba en el orden correcto |
@@ -269,10 +271,12 @@ Con el backend encendido, tienes dos opciones:
 ### ✨ Lo que hace la colección por ti
 
 - Guarda los ids que devuelve cada `POST` y los usa en las demás peticiones.
-- Genera códigos de barras, documentos y correos únicos en cada ejecución, así que se puede correr varias veces.
+- Genera códigos de barras, documentos, correos y fechas únicos en cada ejecución, así que se puede correr varias veces.
 - Trae **pruebas automáticas** que revisan el código de respuesta y los cálculos (por ejemplo, que el total sea 15000).
 
 > 🌐 La variable `baseUrl` apunta a `http://localhost:6060`. Si cambias el puerto en `application.yaml`, cámbiala también en las variables de la colección.
+>
+> ⏭️ Para que las pruebas pasen, ejecuta las carpetas en orden (o usa **Run collection**). Si detienes la ejecución a la mitad, corre la carpeta **Eliminar** o limpia las tablas con el script antes de volver a empezar.
 
 ---
 
@@ -282,14 +286,26 @@ Base URL: `http://localhost:6060`
 
 | Recurso | ➕ Crear | 📋 Listar | 🔍 Por id | ✏️ Editar | 🗑️ Eliminar |
 |---|---|---|---|---|---|
-| **Category** | `POST /Category/Post` | `GET /Category/Get` | `GET /Category/Get/{id}` | `PUT /Category/Put/{id}` | `DELETE /Category/Delete/{id}` |
-| **Supplier** | `POST /Supplier/Post` | `GET /Supplier/Get` | `GET /Supplier/Get/{id}` | `PUT /Supplier/Put/{id}` | `DELETE /Supplier/Delete/{id}` |
-| **Client** | `POST /Client/Post` | `GET /Client/Get` | `GET /Client/Get/{id}` | `PUT /Client/Put/{id}` | `DELETE /Client/Delete/{id}` |
-| **Product** | `POST /Product/Post` | `GET /Product/Get` | `GET /Product/Get/{id}` | `PUT /Product/Put/{id}` | `DELETE /Product/Delete/{id}` |
-| **Sale** | `POST /Sale/Post` | `GET /Sale/Get` | `GET /Sale/Get/{id}` | — | `DELETE /Sale/Delete/{id}` |
-| **SaleDetail** | `POST /SaleDetail/Post` | `GET /SaleDetail/Get` | `GET /SaleDetail/Get/{id}` | `PUT /SaleDetail/Put/{id}` | `DELETE /SaleDetail/Delete/{id}` |
+| **Category** | `POST /api/category` | `GET /api/category` | `GET /api/category/{id}` | `PUT /api/category/{id}` | `DELETE /api/category/{id}` |
+| **Supplier** | `POST /api/supplier` | `GET /api/supplier` | `GET /api/supplier/{id}` | `PUT /api/supplier/{id}` | `DELETE /api/supplier/{id}` |
+| **Client** | `POST /api/client` | `GET /api/client` | `GET /api/client/{id}` | `PUT /api/client/{id}` | `DELETE /api/client/{id}` |
+| **Product** | `POST /api/product/Post` | `GET /api/product/Get` | `GET /api/product/Get/{id}` | `PUT /api/product/Put/{id}` | `DELETE /api/product/Delete/{id}` |
+| **Sale** | `POST /api/sale` | `GET /api/sale` | `GET /api/sale/{id}` | — | `DELETE /api/sale/{id}` |
+| **SaleDetail** | `POST /api/saleDetail` | `GET /api/saleDetail` | `GET /api/saleDetail/{id}` | `PUT /api/saleDetail/{id}` | `DELETE /api/saleDetail/{id}` |
 
-Extra: `GET /SaleDetail/Get/sale/{saleId}` muestra los productos de una venta.
+> 📌 Las rutas de **Product** conservan el sufijo `/Post`, `/Get`, `/Put` y `/Delete`; las demás no.
+
+### 🔎 Consultas adicionales
+
+| Qué hace | Endpoint |
+|---|---|
+| Buscar un cliente por documento | `GET /api/client/document/{document}` |
+| Productos de una categoría | `GET /api/product/categoria/{idCategory}` |
+| Buscar productos por nombre (sin importar mayúsculas) | `GET /api/product/search?nombre=leche` |
+| Productos con stock bajo (por defecto `limit=10`) | `GET /api/product/low-stock?limit=15` |
+| Ventas de un cliente | `GET /api/sale/client/{idClient}` |
+| Ventas en un rango de fechas (`yyyy-MM-dd`) | `GET /api/sale/date?start=2026-10-01&end=2026-10-31` |
+| Productos de una venta | `GET /api/saleDetail/sale/{saleId}` |
 
 ### 📝 Qué enviar en el cuerpo (JSON)
 
@@ -345,7 +361,7 @@ Extra: `GET /SaleDetail/Get/sale/{saleId}` muestra los productos de una venta.
 }
 ```
 
-Con Leche a 4500 y Pan a 2000, `GET /Sale/Get/1` responde:
+Con Leche a 4500 y Pan a 2000, `GET /api/sale/1` responde:
 
 ```json
 {
@@ -359,6 +375,8 @@ Con Leche a 4500 y Pan a 2000, `GET /Sale/Get/1` responde:
   ]
 }
 ```
+
+> El `POST /api/sale` responde con los datos de la venta (id, fecha, total y cliente); para ver los detalles consulta `GET /api/sale/{id}`.
 </details>
 
 <details>
@@ -383,14 +401,15 @@ Con Leche a 4500 y Pan a 2000, `GET /Sale/Get/1` responde:
 - Al **eliminar una venta** se devuelve el stock a los productos y se borran sus detalles.
 
 **🔒 Validaciones**
-- El código de barras del producto es **único** y solo acepta números.
-- El documento del cliente, el nombre de la categoría y el correo del proveedor no se pueden repetir.
+- El código de barras del producto es **único** y solo acepta números (la base de datos lo exige).
+- El documento del cliente es **único**; el nombre de la categoría y el correo del proveedor tampoco se pueden repetir (lo valida la API).
 - Precio mayor a 0 y stock mayor o igual a 0 (el stock puede quedar en 0 al vender la última unidad).
 - No se puede eliminar una **categoría** ni un **proveedor** que tengan productos.
 
 **⚠️ Para tener en cuenta**
-- Los endpoints sueltos de `SaleDetail` (`POST`, `PUT`, `DELETE`) **no** descuentan stock ni actualizan el total de la venta. Para vender, usa `POST /Sale/Post`.
-- Al editar (`PUT`) una categoría, un cliente o un proveedor, el nombre, documento o correo nuevo debe ser distinto a los que ya existen.
+- Los endpoints sueltos de `SaleDetail` (`POST`, `PUT`, `DELETE`) **no** descuentan stock ni actualizan el total de la venta. Para vender, usa `POST /api/sale`.
+- Para borrar un producto o un cliente que ya participó en una venta, primero elimina esas ventas (la base de datos lo impide por las llaves foráneas).
+- Al editar (`PUT`) una categoría, un cliente o un proveedor, el nombre, documento o correo nuevo debe ser distinto a los que ya existen en otros registros.
 
 ---
 
@@ -398,11 +417,11 @@ Con Leche a 4500 y Pan a 2000, `GET /Sale/Get/1` responde:
 
 | Código | Significado | Ejemplo |
 |---|---|---|
-| ✅ `200 OK` | Consulta o actualización correcta | `GET /Product/Get` |
-| 🆕 `201 Created` | Registro creado | `POST /Sale/Post` |
-| 🗑️ `204 No Content` | Eliminado correctamente | `DELETE /Sale/Delete/1` |
+| ✅ `200 OK` | Consulta o actualización correcta | `GET /api/product/Get` |
+| 🆕 `201 Created` | Registro creado | `POST /api/sale` |
+| 🗑️ `204 No Content` | Eliminado correctamente | `DELETE /api/sale/1` |
 | ❌ `400 Bad Request` | Datos inválidos o repetidos | Cantidad 0, código de barras repetido |
-| 🔎 `404 Not Found` | No existe el registro | `GET /Product/Get/999999` |
+| 🔎 `404 Not Found` | No existe el registro | `GET /api/product/Get/999999` |
 | ⛔ `409 Conflict` | Choca con una regla del negocio | Stock insuficiente, categoría con productos |
 
 ---
@@ -428,6 +447,18 @@ La base existe pero no tiene tablas. Ejecuta `Database/db_supermarket.sql` conec
 </details>
 
 <details>
+<summary><b>❌ <code>relation "category" already exists</code></b></summary>
+
+Ya ejecutaste el script antes. Si quieres empezar de cero, mira la última opción de esta lista.
+</details>
+
+<details>
+<summary><b>❌ <code>psql</code> no se reconoce como comando (Windows)</b></summary>
+
+Usa la **Opción B** del paso 2 (pgAdmin), o agrega la carpeta `bin` de PostgreSQL (por ejemplo `C:\Program Files\PostgreSQL\16\bin`) a la variable de entorno `PATH`.
+</details>
+
+<details>
 <summary><b>❌ <code>Port 6060 was already in use</code></b></summary>
 
 Hay otra aplicación usando ese puerto. Ciérrala o cambia `server.port` en `application.yaml` (y la variable `baseUrl` en Postman).
@@ -440,6 +471,12 @@ El backend no está encendido, o `baseUrl` apunta a otro puerto. Revisa la conso
 </details>
 
 <details>
+<summary><b>❌ Postman responde 404 en todas las peticiones</b></summary>
+
+Estás usando una colección vieja con rutas como `/Category/Post`. Importa de nuevo el archivo actual: las rutas ahora empiezan por `/api/`.
+</details>
+
+<details>
 <summary><b>❌ VS Code marca error en los getters y setters</b></summary>
 
 Es Lombok. Instala *Extension Pack for Java*, y luego ejecuta **Java: Clean Java Language Server Workspace** desde la paleta de comandos (`Ctrl + Shift + P`).
@@ -448,7 +485,7 @@ Es Lombok. Instala *Extension Pack for Java*, y luego ejecuta **Java: Clean Java
 <details>
 <summary><b>🔄 Quiero borrar todo y empezar de cero</b></summary>
 
-En `Database/db_supermarket.sql` descomenta las líneas `DROP TABLE` y ejecuta el script completo. Ojo: se pierden todos los datos.
+En `Database/db_supermarket.sql` quita el `--` de las seis líneas `DROP TABLE` (sección *Reiniciar desde cero*) y ejecuta el script completo. Ojo: se pierden todos los datos.
 </details>
 
 ---
